@@ -1,17 +1,16 @@
 require_relative 'sales_engine'
 require_relative 'sales_analyst'
+require_relative "merchant_repo"
 
 se = SalesEngine.from_csv({
   :items     => "./data/items.csv",
   :merchants => "./data/merchants.csv",
 })
 
-# merchant = se.merchants.find_by_id(12334112)
-# merchant.items
-#
-# item = se.items.find_by_id(263395237)
-# item.merchant
-
 sa = SalesAnalyst.new(se)
 
-puts sa.unit_price_and_average_difference_squared_sum
+# m = MerchantRepository.new(self, "./data/merchants.csv")
+
+
+# puts sa.golden_items
+puts sa.golden_items

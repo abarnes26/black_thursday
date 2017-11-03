@@ -5,6 +5,16 @@ class SalesAnalyst
     @sales_engine = sales_engine
   end
 
+  # private :merchant_list,
+  #         :find_items,
+  #         :find_standard_deviation_difference_total,
+  #         :find_standard_deviation_total,
+  #         :total_merchants_minus_one,
+  #         :create_merchant_id_item_total_list,
+  #         :standard_deviation_plus_average,
+  #         :filter_merchants_by_items_in_stock
+  # public
+
   def average_items_per_merchant
     merchant_count = @sales_engine.merchants.all.count
     item_count = @sales_engine.items.all.count
@@ -59,7 +69,6 @@ class SalesAnalyst
     end
   end
 
-
   def average_item_price_for_merchant(merchant_id)
     list = find_the_collections_of_items(merchant_id.to_s)
     (list.reduce(0) { |sum, item| sum + item.unit_price_to_dollars } / list.count).round(2)
@@ -99,8 +108,8 @@ class SalesAnalyst
   end
 
   def golden_items
-    @sales_engine.items.all.map { |item|
-      item.unit_price > golden_items_deviation }
+    @sales_engine.items.all.find_all do |item|
+      item.unit_price > golden_items_deviation
+    end
   end
-
 end
