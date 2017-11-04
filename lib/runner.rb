@@ -1,6 +1,12 @@
 require_relative 'sales_engine'
 require_relative 'sales_analyst'
 
+# se = SalesEngine.from_csv({
+#   :items     => "./data/items.csv",
+#   :merchants => "./data/merchants.csv",
+#   :invoices => "./data/invoices.csv"
+# })
+
 se = SalesEngine.from_csv({
   :items     => "./test/fixtures/items_truncated.csv",
   :merchants => "./test/fixtures/merchants_truncated.csv",
@@ -9,6 +15,4 @@ se = SalesEngine.from_csv({
 
 sa = SalesAnalyst.new(se)
 
-
-p sa.golden_items
-
+puts sa.top_merchants_by_invoice_count

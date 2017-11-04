@@ -54,7 +54,7 @@ class ItemRepository
   end
 
   def find_all_by_merchant_id(merchant_id)
-    items.find_all { |item| item.merchant_id == merchant_id.to_s }
+    items.find_all { |item| item.merchant_id == merchant_id }
   end
 
   def find_merchant(merchant_id)

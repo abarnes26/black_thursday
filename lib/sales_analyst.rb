@@ -34,7 +34,7 @@ class SalesAnalyst
   def find_standard_deviation_difference_total
     find_items.map do |item_total|
       (item_total - average_items_per_merchant) ** 2
-    end.sum
+    end.sum.round(2)
   end
 
   def find_standard_deviation_total
@@ -70,7 +70,7 @@ class SalesAnalyst
   end
 
   def average_item_price_for_merchant(merchant_id)
-    list = find_the_collections_of_items(merchant_id.to_s)
+    list = find_the_collections_of_items(merchant_id)
     (list.reduce(0) { |sum, item| sum + item.unit_price_to_dollars } / list.count).round(2)
   end
 
@@ -85,18 +85,18 @@ class SalesAnalyst
   end
 
   def average_unit_price
-    @sales_engine.items.all.reduce(0) { |sum, item|
-    sum + item.unit_price
-     } / @sales_engine.items.all.count
+    (@sales_engine.items.all.reduce(0) { |sum, item|
+    sum + item.unit_price_to_dollars
+     } / @sales_engine.items.all.count).round(2).to_f
   end
 
   def unit_price_and_average_difference_squared_sum
-    @sales_engine.items.all.reduce(0) { |sum, item|
-    sum += (item.unit_price - average_unit_price) ** 2 }
+    (@sales_engine.items.all.reduce(0) { |sum, item|
+    sum += (item.unit_price_to_dollars - average_unit_price) ** 2 })
   end
 
   def unit_price_squared_sum_division
-    unit_price_and_average_difference_squared_sum / ((@sales_engine.items.all.count) - 1)
+    (unit_price_and_average_difference_squared_sum / ((@sales_engine.items.all.count) - 1))
   end
 
   def unit_price_standard_deviation
@@ -104,17 +104,18 @@ class SalesAnalyst
   end
 
   def golden_items_deviation
-    average_unit_price + (unit_price_standard_deviation * 2)
+    (average_unit_price + (unit_price_standard_deviation * 2))
   end
 
   def golden_items
-    @sales_engine.items.all.map { |item|
-       item.unit_price > golden_items_deviation }
+    @sales_engine.items.items.find_all do |item|
+      item.unit_price_to_dollars > golden_items_deviation
+     end
   end
 
   def average_invoices_per_merchant
-    (find_invoice_totals.reduce(0) { |sum, totals|
-      sum += totals } / find_invoice_totals.count.to_f).round(2)
+    find_invoice_totals.reduce(0) { |sum, totals|
+      sum += totals } / find_invoice_totals.count.to_f
   end
 
   def find_invoice_totals
@@ -133,7 +134,7 @@ class SalesAnalyst
   end
 
   def average_invoices_per_merchant_standard_deviation
-    Math.sqrt(invoice_difference_total_divided).round(2)
+    Math.sqrt(invoice_difference_total_divided)
   end
 
   def invoice_count_two_standard_deviations_above_mean
@@ -159,6 +160,6 @@ class SalesAnalyst
   end
 
   def create_merchant_invoice_total_list
-      Hash[merchant_list.zip find_invoice_totals]
-    end
+    Hash[merchant_list.zip find_invoice_totals]
+  end
 end
