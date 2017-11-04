@@ -8,7 +8,7 @@ class MerchantRepository
 
   def initialize(parent, filename)
     @merchants           = []
-    @engine        = parent
+    @sales_engine        = parent
     @load                = load_file(filename)
   end
 
@@ -39,11 +39,14 @@ class MerchantRepository
   end
 
   def find_items(item_id)
-    engine.find_items(item_id)
+    @sales_engine.find_items(item_id)
   end
 
+  def find_invoices(id)
+    @sales_engine.find_invoices(id)
+  end
+  
   def inspect
       "#<#{self.class} #{@merchants.size} rows>"
   end
-
 end
