@@ -108,7 +108,7 @@ class SalesAnalystTest < Minitest::Test
     assert Hash, sa.create_merchant_id_item_total_list
     assert_equal 475, sa.create_merchant_id_item_total_list.count
     assert_equal "12334105", sa.create_merchant_id_item_total_list.first.first
-    assert_equal 3, sa.create_merchant_id_item_total_list.first.last
+    assert_equal 3, sa.create_merchant_id_item_total_list["12334105"]
   end
 
   def test_it_can_find_standard_deviation_plus_average

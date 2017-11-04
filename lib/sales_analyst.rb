@@ -5,6 +5,16 @@ class SalesAnalyst
     @sales_engine = sales_engine
   end
 
+  # private :merchant_list,
+  #         :find_items,
+  #         :find_standard_deviation_difference_total,
+  #         :find_standard_deviation_total,
+  #         :total_merchants_minus_one,
+  #         :create_merchant_id_item_total_list,
+  #         :standard_deviation_plus_average,
+  #         :filter_merchants_by_items_in_stock
+  # public
+
   def average_items_per_merchant
     merchant_count = @sales_engine.merchants.all.length
     item_count = @sales_engine.items.all.length
@@ -58,7 +68,6 @@ class SalesAnalyst
     sales_engine.merchants.find_by_id(merchants[0])
     end
   end
-
 
   def average_item_price_for_merchant(merchant_id)
     list = find_the_collections_of_items(merchant_id.to_s)
@@ -152,5 +161,4 @@ class SalesAnalyst
   def create_merchant_invoice_total_list
       Hash[merchant_list.zip find_invoice_totals]
     end
-
 end

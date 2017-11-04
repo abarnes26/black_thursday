@@ -1,6 +1,7 @@
 require_relative "sales_engine"
 require_relative "item"
 require "csv"
+require "bigdecimal"
 
 class ItemRepository
   attr_reader :items,
@@ -29,7 +30,7 @@ class ItemRepository
   end
 
   def find_by_id(id)
-    @items.find { |item| item.id == id.to_s }
+    @items.find { |item| item.id == id }
   end
 
   def find_by_name(name)
@@ -43,15 +44,17 @@ class ItemRepository
   end
 
   def find_all_by_price(price)
-    items.find_all { |item| item.unit_price.to_f/100 == price }
+    items.find_all do |item|
+      (item.unit_price_to_dollars) == BigDecimal.new(price)
+    end
   end
 
   def find_all_by_price_in_range(price_range)
-    items.find_all { |item| price_range.include?(item.unit_price) }
+    items.find_all { |item| price_range.include?(item.unit_price_to_dollars) }
   end
 
   def find_all_by_merchant_id(merchant_id)
-    items.find_all { |item| item.merchant_id == merchant_id }
+    items.find_all { |item| item.merchant_id == merchant_id.to_s }
   end
 
   def find_merchant(merchant_id)
@@ -63,4 +66,9 @@ class ItemRepository
     items.group_by { |item| group << items.merchant_id }
     group.count
   end
+
+  def inspect
+      "#<#{self.class} #{@items.size} rows>"
+  end
+
 end
