@@ -1,8 +1,13 @@
+require "bigdecimal"
 class SalesAnalyst
-  attr_reader :sales_engine
+  attr_reader :sales_engine,
+              :standard_deviation,
+              :golden_items_dev
 
   def initialize(sales_engine)
     @sales_engine = sales_engine
+    @standard_deviation = average_items_per_merchant_standard_deviation
+    @golden_items_dev = golden_items_deviation
   end
 
   # private :merchant_list,
@@ -46,7 +51,7 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    Math.sqrt(find_standard_deviation_total).round(2)
+    standard_deviation = (Math.sqrt(find_standard_deviation_total).round(2))
   end
 
   def create_merchant_id_item_total_list
@@ -54,7 +59,7 @@ class SalesAnalyst
   end
 
   def standard_deviation_plus_average
-    average_items_per_merchant_standard_deviation + average_items_per_merchant
+    standard_deviation + average_items_per_merchant
   end
 
   def filter_merchants_by_items_in_stock
@@ -71,7 +76,7 @@ class SalesAnalyst
 
   def average_item_price_for_merchant(merchant_id)
     list = find_the_collections_of_items(merchant_id)
-    (list.reduce(0) { |sum, item| sum + item.unit_price_to_dollars } / list.count).round(2)
+    (list.reduce(0) { |sum, item| sum + item.unit_price_to_dollars } / (list.count)).round(2)
   end
 
   def find_the_collections_of_items(merchant_id)
@@ -109,7 +114,7 @@ class SalesAnalyst
 
   def golden_items
     @sales_engine.items.items.find_all do |item|
-      item.unit_price_to_dollars > golden_items_deviation
+      item.unit_price_to_dollars > golden_items_dev
      end
   end
 

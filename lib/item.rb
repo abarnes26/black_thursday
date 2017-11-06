@@ -12,7 +12,7 @@ class Item
 
   def initialize(item_info, parent)
     @id          = item_info[:id].to_i
-    @name        = item_info[:name]
+    @name        = item_info[:name].to_s
     @description = item_info[:description]
     @unit_price  = (BigDecimal.new(item_info[:unit_price]))/100
     @created_at  = Time.parse(item_info[:created_at])
@@ -26,6 +26,6 @@ class Item
   end
 
   def unit_price_to_dollars
-    (unit_price).round(2).to_f
+    (unit_price).round(2)
   end
 end

@@ -43,10 +43,10 @@ class ItemRepoTest < Minitest::Test
 
   def test_it_can_find_items_by_description
     item_repo = ItemRepository.new(self, "./data/items.csv")
-    description = "Free standing wooden letters \n\n15cm\n\nAny colours"
+    description = "Adidas Breitner Super mit Nocken. Hergestellt ab dem Jahr 1983."
     results = item_repo.find_all_with_description(description)
 
-    assert_equal 263396013, results.first.id
+    assert_equal 263407925, results.first.id
   end
 
   def test_it_can_find_all_by_merchant_id

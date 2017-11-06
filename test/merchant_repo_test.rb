@@ -24,6 +24,7 @@ class MerchantRepoTest < Minitest::Test
     results = merch_repo.find_by_id(12335971)
 
     assert_equal "ivegreenleaves", results.name
+    assert_equal 1, results.length
   end
 
   def test_find_by_id_can_return_nil
