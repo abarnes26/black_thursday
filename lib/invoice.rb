@@ -63,7 +63,7 @@ attr_reader :id,
   end
 
   def items
-    invoice_items.find_all do |invoice_item|
+    invoice_items.map do |invoice_item|
       invoice_item.item
     end
   end

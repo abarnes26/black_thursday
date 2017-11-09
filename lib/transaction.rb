@@ -26,7 +26,7 @@ class Transaction
   end
 
   def invoice
-    repository.find_invoice_by_invoice_id(self.id)
+    repository.find_invoice_by_invoice_id(self.invoice_id)
   end
 
   def invoice_items
